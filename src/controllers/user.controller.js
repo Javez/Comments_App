@@ -1,6 +1,6 @@
 const { Comment } = require("../models/comment.model");
 
-class CommentController {
+class UserController {
   static async addUser(req, res) {}
 
   static async getUser(req, res) {}
@@ -8,4 +8,4 @@ class CommentController {
   static async getUsers(req, res) {}
 }
 
-export default CommentController;
+export default UserController;
