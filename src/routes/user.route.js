@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const CommentController = require("../controllers/comment.controller");
+const UserController = require("../controllers/user.controller");
 
-router.post("/addUser", CommentController.addUser);
-router.get("/getUser/:userId", CommentController.getUser);
-router.get("/getUsers", CommentController.getUsers);
+router.post("/addUser", UserController.addUser());
+router.get("/getUserById/:userId", UserController.getUser());
+router.get("/getAllUsers", UserController.getUsers);
 
 export default router

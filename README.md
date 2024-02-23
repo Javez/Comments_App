@@ -4,7 +4,7 @@ Runs the app in the development mode.
 Open Postman [http://localhost:8080](http://localhost:8080) to make requests to backend.
 
 ## Setup Scripts
-- Backend: `npm install express sequelize pg sequelize-cli body-parser`
+- Backend: `npm install express sequelize pg sequelize-cli body-parser dotenv`
 
 ## Run Scripts
 In root directory, run next command to start app:
