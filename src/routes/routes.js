@@ -1,7 +1,13 @@
-import commentRoutes from "./comment.route";
-import userRoutes from "./user.route";
+import express from "express";
+import commentRoutes from "./comment.route.js";
+import userRoutes from "./user.route.js";
 
-export default (app) => {
-    app.use("/comments", commentRoutes);
-    app.use("/users", userRoutes);
-}
+const app = express.Router();
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+app.use("/comments", commentRoutes);
+app.use("/users", userRoutes);
+
+export default app;
