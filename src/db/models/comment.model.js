@@ -1,9 +1,7 @@
-const { Sequelize } = require("sequelize");
+import Sequelize from "sequelize";
 
-class Comment extends Sequelize.Model {}
-
-Comment.init(
-  {
+const initCommentModel = (sequelize) => {
+  const newComment = sequelize.define("comment", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -11,6 +9,11 @@ Comment.init(
     },
     userId: {
       type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+    parentCommentId: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
     },
     text: {
       type: Sequelize.TEXT,
@@ -20,11 +23,16 @@ Comment.init(
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW,
     },
-  },
-  {
-    sequelize,
-    modelName: "Comment",
-  }
-);
+    image: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    file: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+  });
+  return newComment;
+}
 
-module.exports = Comment;
+export default initCommentModel;
