@@ -1,34 +1,29 @@
-const { Sequelize } = require("sequelize");
+import Sequelize from "sequelize";
 
-class User extends Sequelize.Model {};
-
-User.init(
-  {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    username: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-      },
-    },
-    avatar: {
-      type: Sequelize.STRING,
+const initUserModel = (sequelize) => {
+const newUser = sequelize.define("user", {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
     },
   },
-  {
-    sequelize,
-    modelName: "User",
-  }
-);
+  avatar: {
+    type: Sequelize.STRING,
+  },
+});
+  return newUser;
+}
 
-module.exports = User;
+export default initUserModel;
