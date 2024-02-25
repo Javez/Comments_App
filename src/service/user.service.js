@@ -1,8 +1,13 @@
-import User from "../db/models/user.model.js";
-
+import database from "../db/sequelize.db.js";
 class UserService {
   static async addUser(user) {
-    return User.create(user);
+    let result;
+    try {
+      result = await database.User.create(user);
+    } catch (error) {
+      console.log(error)
+    }
+    return result;
   }
 
   static async getUser() {

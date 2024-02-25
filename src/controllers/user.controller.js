@@ -1,4 +1,3 @@
-import { error } from "console";
 import userService from "../service/user.service.js";
 
 class UserController {
@@ -7,10 +6,10 @@ class UserController {
       const data = {
         username: req.body.username,
         email: req.body.email,
-        avatar: req.body.avatar,
+        avatarUrl: req.body.avatarUrl,
       };
       res.send(await userService.addUser(data));
-    } catch {
+    } catch (error) {
       console.log(error);
     }
   }
@@ -21,7 +20,7 @@ class UserController {
         id: req.body.id,
       };
       res.send(await userService.getUser(id));
-    } catch {
+    } catch (error) {
       console.log(error);
     }
   }
@@ -29,7 +28,7 @@ class UserController {
   static async getAllUsers(req, res) {
     try {
       res.send(await userService.getAllUsers());
-    } catch {
+    } catch (error) {
       console.log(error);
     }
   }

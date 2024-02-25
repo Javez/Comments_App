@@ -1,14 +1,20 @@
-import Comment from "../db/models/comment.model.js";
+import database from "../db/sequelize.db.js";
 
 class CommentService {
   static async addComment(data) {
-    return Comment.create(data);
+    let result;
+    try {
+      result = await database.Comment.create(data);
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
   }
   static async addSubComment(data) {
-    return Comment.create(data);
+    return database.Comment.create(data);
   }
   static async getCommentById(data) {
-    return Comment.findByPk(data.id, {
+    return database.Comment.findByPk(data.id, {
       include: [
         {
           model: Comment,
@@ -18,7 +24,7 @@ class CommentService {
     });
   }
   static async getAllComments() {
-    return Comment.findAll({
+    return database.Comment.findAll({
       include: [
         {
           model: Comment,
@@ -28,7 +34,7 @@ class CommentService {
     });
   }
   static async getSubCommentsByCommentId(data) {
-    return Comment.findAll(comment, {
+    return database.Comment.findAll(comment, {
       where: { parentCommentId: data.id },
     });
   }
