@@ -1,4 +1,4 @@
-const { User } = require("../models/user.model");
+import User from "../db/models/user.model.js";
 
 class UserService {
   static async addUser(user) {

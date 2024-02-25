@@ -1,45 +1,37 @@
-const { Comment } = require("../models/comment.model");
+import Comment from "../db/models/comment.model.js";
 
 class CommentService {
-  static async createComment(comment) {
-    return Comment.create(comment);
+  static async addComment(data) {
+    return Comment.create(data);
   }
-
-  static async getComments() {
+  static async addSubComment(data) {
+    return Comment.create(data);
+  }
+  static async getCommentById(data) {
+    return Comment.findByPk(data.id, {
+      include: [
+        {
+          model: Comment,
+          as: "comment",
+        },
+      ],
+    });
+  }
+  static async getAllComments() {
     return Comment.findAll({
       include: [
         {
-          model: User,
-          as: "user"
-        }
-      ]
+          model: Comment,
+          as: "comment",
+        },
+      ],
     });
   }
-
-  static async getCommentById(id) {
-    return Comment.findByPk(id, {
-      include: [
-        {
-          model: User,
-          as: "user"
-        }
-      ]
-    });
-  }
-
-  static async updateComment(id, comment) {
-    return Comment.update(comment, {
-      where: { id }
-    });
-  }
-
-  static async deleteComment(id) {
-    return Comment.destroy({
-      where: { id }
+  static async getSubCommentsByCommentId(data) {
+    return Comment.findAll(comment, {
+      where: { parentCommentId: data.id },
     });
   }
 }
 
 export default CommentService;
-
-
