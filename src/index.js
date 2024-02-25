@@ -6,25 +6,28 @@ import database from "./db/sequelize.db.js";
 
 dotenv.config();
 const env = process.env.NODE_ENV || "development";
-
 const app = express();
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", routes);
-try {
-  
-} catch (error) {
-  
-}
-database.openConnection().then(() => {
-  const PORT = process.env[`${env.toUpperCase()}_APP_PORT`] || "";
 
-  app.listen(PORT, () => {
-    console.log(`The server is running on port ${PORT}`);
+try {
+  database.openConnection().then(() => {
+    const PORT = process.env[`${env.toUpperCase()}_APP_PORT`] || "";
+    
+    app.listen(PORT, () => {
+      console.log(`The server is running on port ${PORT}`);
+    });
+    database.initModels().then(() => {
+      console.log("Models Initialized");
+    });
+    database.createTable().then(() => {
+      console.log("Model for db created");
+    });
   });
-  database.createTable().then(() => {
-    console.log("Model for db created");
-  });
-});
+} catch (error) {
+  console.log(error);
+}
+  
+  
