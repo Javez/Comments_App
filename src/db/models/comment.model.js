@@ -1,7 +1,7 @@
 import Sequelize from "sequelize";
 
 const initCommentModel = (sequelize) => {
-  const newComment = sequelize.define("comment", {
+  const Comment = sequelize.define("comment", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -32,7 +32,7 @@ const initCommentModel = (sequelize) => {
       allowNull: true,
     },
   });
-  return newComment;
+  return Comment;
 }
 
 export default initCommentModel;
