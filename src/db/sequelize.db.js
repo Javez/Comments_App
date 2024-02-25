@@ -12,6 +12,16 @@ class Database {
     this.sequelize = new Sequelize(options);
   }
 
+  async initModels() {
+    try {
+      this.User = initUserModel(this.sequelize);
+      this.Comment = initCommentModel(this.sequelize);
+      initAssociations(this.User, this.Comment);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async openConnection() {
     try {
       await this.sequelize.authenticate();
@@ -36,10 +46,6 @@ class Database {
 
   async createTable() {
     try {
-      const user = initUserModel(this.sequelize);
-      const comment = initCommentModel(this.sequelize);
-      const { newUser, newComment } = initAssociations(user, comment);
-
       await this.sequelize.sync({ force: true });
       console.log("The tables were just (re)created!");
       return true;
