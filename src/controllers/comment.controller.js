@@ -1,99 +1,88 @@
-import sharp from "sharp";
-import path from "path";
-import { error } from "console";
-import commentService from "../service/comment.service.js";
+import CommentService from "../service/comment.service.js";
 
 class CommentController {
-  static async addComment(req, res) {
+  static async addComment(socket, commentData) {
     try {
-      let data;
+      const commentDataObject = JSON.parse(commentData);
+      const { userId, parentCommentId, text, image, file } = commentDataObject;
 
-      if (req.files) {
-        const { image, file } = req.files;
-        let imagePath;
-        // Process and validate image dimensions using sharp if image is uploaded as a file
-        if (image && image[0]) {
-          const imageBuffer = await sharp(image[0].buffer)
-            .resize({ width: 320, height: 240 })
-            .toBuffer();
-          imagePath = `uploads/${Date.now()}_comment_image.jpg`;
-          await sharp(imageBuffer).toFile(imagePath);
-        } else if (imageUrl) {
-          // Save directly if image is provided as a URL
-          imagePath = imageUrl;
-        }
-
-        let filePath;
-        // Validate and save file path if provided
-        if (file && file[0]) {
-          filePath = `uploads/${Date.now()}_comment_file.${path.extname(
-            file[0].originalname
-          )}`;
-          await sharp(file[0].buffer).toFile(filePath);
-        }
-
-        data = {
-          userId: req.body.userId,
-          parentCommentId: req.body.parentCommentId,
-          text: req.body.text,
-          image: image,
-          file: file,
-        };
-      } else {
-        data = {
-          userId: req.body.userId,
-          parentCommentId: req.body.parentCommentId,
-          text: req.body.text,
-        };
-      }
-
-      const comment = await commentService.addComment(data);
-      res.status(201).json(comment);
+      const data = {
+        userId: userId,
+        parentCommentId: parentCommentId,
+        text: text,
+      };
+      const comment = await CommentService.addComment(data);
+      socket.emit("commentAdded", { success: true, comment });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ error: error.message });
+      socket.emit("commentAdded", {
+        success: false,
+        error: error.message || "Failed to add comment",
+      });
     }
   }
-  static async addSubComment(req, res) {
+  static async addSubComment(socket, commentData) {
     try {
       const data = {
-        parentCommentId: req.body.parentCommentId,
-        text: req.body.text,
-        image: req.body.image,
-        file: req.body.file,
+        parentCommentId: commentData.parentCommentId,
+        text: commentData.text,
+        image: commentData.image,
+        file: commentData.file,
       };
-      const comment = await commentService.addSubComment(data);
-      res.status(201).json(comment);
+
+      const comment = await CommentService.addSubComment(data);
+      socket.emit("subCommentAdded", { success: true, comment });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: error.message });
+      console.error(error);
+      socket.emit("subCommentAdded", {
+        success: false,
+        error: error.message || "Failed to add sub-comment",
+      });
     }
   }
-  static async getCommentById(req, res) {
+
+  static async getCommentById(socket, commentData) {
     try {
       const data = {
-        id: req.body.id,
+        id: commentData.id,
       };
-      res.send(await commentService.getCommentById(data));
+      const comment = await CommentService.getCommentById(data);
+      socket.emit("commentDetails", { success: true, comment });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      socket.emit("commentDetails", {
+        success: false,
+        error: error.message || "Failed to get comment details",
+      });
     }
   }
-  static async getAllComments() {
+
+  static async getAllComments(socket) {
     try {
-      res.send(await commentService.getAllComments());
+      const comments = await CommentService.getAllComments();
+      socket.emit("allComments", { success: true, comments });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      socket.emit("allComments", {
+        success: false,
+        error: error.message || "Failed to get all comments",
+      });
     }
   }
-  static async getSubCommentsByCommentId(req, res) {
+
+  static async getSubCommentsByCommentId(socket, commentData) {
     try {
       const data = {
-        parentCommentId: req.body.id,
+        parentCommentId: commentData.id,
       };
-      res.send(await commentService.getSubCommentsByCommentId(data));
+      const subComments = await CommentService.getSubCommentsByCommentId(data);
+      socket.emit("subCommentsByCommentId", { success: true, subComments });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      socket.emit("subCommentsByCommentId", {
+        success: false,
+        error: error.message || "Failed to get sub-comments",
+      });
     }
   }
 }

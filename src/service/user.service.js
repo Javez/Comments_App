@@ -11,7 +11,9 @@ class UserService {
   }
 
   static async getUser() {
-    return User.findAll({
+    let result;
+    try { 
+      result = await database.User.findAll({
       include: [
         {
           model: User,
@@ -19,29 +21,51 @@ class UserService {
         },
       ],
     });
+  } catch (error) {
+    console.log(error);
+  }
+    return result;
   }
 
   static async getUserById(id) {
-    return User.findByPk(id, {
-      include: [
-        {
-          model: User,
-          as: "user",
-        },
-      ],
-    });
+    let result;
+    try {
+      result = await database.User.findByPk(id, {
+        include: [
+          {
+            model: User,
+            as: "user",
+          },
+        ],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
   }
 
   static async updateUser(id, user) {
-    return User.update(user, {
-      where: { id },
-    });
+    let result;
+    try {
+      result = await database.User.update(user, {
+        where: { id },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
   }
 
   static async deleteUser(id) {
-    return User.destroy({
-      where: { id },
-    });
+    let result;
+    try {
+      result = await database.User.destroy({
+        where: { id },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    return 
   }
 }
 
