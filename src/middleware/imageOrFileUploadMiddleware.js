@@ -1,41 +1,23 @@
-import multer from "multer";
+import fs from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
-const storage = multer.memoryStorage();
+function handleFileUpload(socket, data) {
+  const currentModulePath = fileURLToPath(import.meta.url);
+  const currentModuleDir = dirname(currentModulePath);
+  const fileName = join(currentModuleDir, "uploads", data.fileName);
 
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    if (file.fieldname === "image") {
-      // Validate image file type and dimensions
-      if (file.mimetype && !file.mimetype.startsWith("image/")) {
-        return cb(
-          new Error("Invalid image file type. Only images are allowed.")
-        );
+  return new Promise((resolve, reject) => {
+    fs.writeFile(fileName, data.fileData, "binary", (err) => {
+      if (err) {
+        console.error(err);
+        reject("File upload failed");
+      } else {
+        socket.emit("fileUploadComplete", { fileName });
+        resolve("File uploaded successfully");
       }
-    } else if (file.fieldname === "file") {
-      // Validate file type (txt, doc, docx, pdf)
-      const allowedFileTypes = [
-        "text/plain",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/pdf",
-      ];
-      if (file.mimetype && !allowedFileTypes.includes(file.mimetype)) {
-        return cb(
-          new Error(
-            "Invalid file type. Only txt, doc, docx, and pdf files are allowed."
-          )
-        );
-      }
-    }
+    });
+  });
+}
 
-    cb(null, true);
-  },
-});
-
-const imageFileUploadMiddleware = upload.fields([
-  { name: "image", maxCount: 1 },
-  { name: "file", maxCount: 1 },
-]);
-
-export default imageFileUploadMiddleware;
+export default handleFileUpload;
