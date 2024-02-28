@@ -11,32 +11,40 @@ class CommentService {
     return result;
   }
   static async addSubComment(data) {
-    return database.Comment.create(data);
+    let result;
+    try {
+      result = await database.Comment.create(data);
+    } catch (error) {
+      console.log(error);
+    }
+    return result;
   }
-  static async getCommentById(data) {
-    return database.Comment.findByPk(data.id, {
-      include: [
-        {
-          model: Comment,
-          as: "comment",
+  static async getCommentById(id) {
+    try {
+      return await database.Comment.findOne({
+        where: {
+          id: id,
         },
-      ],
-    });
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
   static async getAllComments() {
-    return database.Comment.findAll({
-      include: [
-        {
-          model: Comment,
-          as: "comment",
-        },
-      ],
-    });
+    try {
+      return await database.Comment.findAll();
+    } catch (error) {
+      console.log(error);
+    }
   }
-  static async getSubCommentsByCommentId(data) {
-    return database.Comment.findAll(comment, {
-      where: { parentCommentId: data.id },
-    });
+  static async getSubCommentsByCommentId(id) {
+    try {
+      return await database.Comment.findAll({
+        where: { parentCommentId: id },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
