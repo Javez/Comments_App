@@ -3,5 +3,5 @@ public/
 build/
 task.pdf
 .tmp/
-.env*
-.dockerignore
+.env
+docker-compose.yml

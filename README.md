@@ -16,7 +16,7 @@ In root directory, run next command to start app:
 
 - `npm run dev`
 
-## Basic request examples
+## Basic Express requests
 
 [POST Method]
 [URL] `http://localhost:8080/users/addUser`\
@@ -27,22 +27,59 @@ In root directory, run next command to start app:
 "avatarUrl": "https://img1.example.com" [Text]\
 }
 
-[POST Method]
-[URL] `http://localhost:8080/comments/addComment`\
-[Body]: `x-www-form-url-encoded`\
-{\
-"userId": "1" [Number]\
-"parentCommentId": "example@gmail.com" [Number] (Optional, enable this line to make answer on some comment)\
-"text": "https://img1.example.com" [Text]\
-"image": "" [URL or Path] \
-"file": "" [Path]\
+[GET Method]
+[URL] `http://localhost:8080/users/getUserById/1`\
+
+[GET Method]
+[URL] `http://localhost:8080/users/getAllUsers`\
+
+[Websocket connection]
+[URL] `ws://localhost:8080/`\
+[Message]: `addComment`\
+{
+"userId": "1",
+"text": "test",
+"image": "binary",
+"file": "binary"
 }
+
+[Websocket connection]
+[URL] `ws://localhost:8080/`\
+[Message]: `addSubComment`\
+{
+"userId": "1",
+"parentCommentId": "1",
+"text": "test2",
+"image": "binary2",
+"file": "binary2"
+}
+
+[Websocket connection]
+[URL] `ws://localhost:8080/`\
+[Message]: `getCommentById`\
+{
+"id": "1"
+}
+
+[Websocket connection]
+[URL] `ws://localhost:8080/`\
+[Message]: `getAllComments`\
+No data
+
+[Websocket connection]
+[URL] `ws://localhost:8080/`\
+[Message]: `getSubCommentsByCommentId`\
+{
+"id": "1"
+}
+
+## Basic
 
 ## Packages
 
 **Note: This is the list of `packages` for manual install!**
 
-- `express sequelize pg sequelize-cli body-parser dotenv multer --include=optional sharp socket.io`
+- `express sequelize pg sequelize-cli body-parser dotenv express-validator validator socket.io`
 
 ## Docker container is under devlopment
 
