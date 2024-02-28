@@ -1,14 +1,16 @@
 import express from "express";
 import commentRoutes from "./comment.route.js";
 import userRoutes from "./user.route.js";
-const setupCommentRoutes = (io) => {
 
-  io.on('connection', (socket) => {
-    console.log('A user connected');
+
+
+const setupCommentRoutes = (io) => {
+  io.on("connection", (socket) => {
+    console.log("A user with id: " + socket.id + " connected.");
     commentRoutes(socket);
 
-    socket.on('disconnect', () => {
-      console.log('User disconnected');
+    socket.on("disconnect", () => {
+      console.log("User disconnected");
     });
   });
 
@@ -21,7 +23,5 @@ const setupUserRoutes = () => {
 
   return app;
 };
-
-
 
 export { setupCommentRoutes, setupUserRoutes };
