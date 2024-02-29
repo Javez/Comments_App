@@ -80,6 +80,7 @@ No data
 **Note: This is the list of `packages` for manual install!**
 
 - `express sequelize pg sequelize-cli body-parser dotenv express-validator validator socket.io`
+- `nodemon` for local development
 
 ## Docker container is under devlopment
 
@@ -104,4 +105,4 @@ No data
 
 If you aren't satisfied im very sad :d
 
-You can learn more in the [Node.js app documentation](url).
+You can running app at [Heroku]([url](https://comment-app-885618336cfa.herokuapp.com/)https://comment-app-885618336cfa.herokuapp.com/).
