@@ -82,7 +82,8 @@ No data
 - `express sequelize pg sequelize-cli body-parser dotenv express-validator validator socket.io`
 - `nodemon` for local development
 
-## Docker container is under devlopment
+## Docker container
+**To create docker container use docker-compose.yml and command in terminal: docker compose up**
 
 ## Screenshots
 "Postman example"
