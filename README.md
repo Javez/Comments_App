@@ -1,5 +1,5 @@
 # Getting Started with Simple Comments Node.js app.
-You can open running app at [Heroku](https://comment-app-885618336cfa.herokuapp.com/).
+You can open running app at [Heroku](https://comment-app-885618336cfa.herokuapp.com/). \
 Node version: v21.6.2\
 Runs the app in the development mode.\
 Open Postman [http://localhost:8080](http://localhost:8080) to make backend requests in local development.
